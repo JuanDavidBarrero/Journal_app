@@ -1,15 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useForm } from '../../hooks/useForm'
 import validador from 'validator'
+import {useDispatch} from 'react-redux'
+
+import { useForm } from '../../hooks/useForm'
+import { startRegisterWithEmailPasswordName } from '../../action/auth'
 
 export const RegisterScreen = () => {
+
+    const dispatch = useDispatch();
 
     const [formValue, handleInputaChange] = useForm({
         name: 'Hades',
         email: 'hades@gmail.com',
-        password: 123456,
-        password2: 123456
+        password:'123456',
+        password2:'123456'
     })
 
     const { name, email, password, password2 } = formValue;
@@ -17,18 +22,21 @@ export const RegisterScreen = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if ( isFormValid() ) {
-            console.log(name, email, password, password2)
+            dispatch( startRegisterWithEmailPasswordName(email,password,name) )
         }
     }
 
     const isFormValid = () => {
         if (name.trim() === 0) {
+            console.log('Es necesario un nombre');
             return false;
         }
         else if (!validador.isEmail(email)) {
+            console.log('email no valida');
             return false;
         }
-        else if (password !== password2 || password.length > 4) {
+        else if (password.trim() !== password2.trim() || password.length < 4) {
+            console.log('Contraña no son iguales');
             return false;
         }
 

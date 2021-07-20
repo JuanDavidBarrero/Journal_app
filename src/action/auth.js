@@ -1,11 +1,10 @@
 import { types } from "../types/types"
 import { firebase, googleAuthProvide } from '../firebase/firebase-config'
 
-export const startLoginEmailPasswotd = (email, password) => {
-    return (dispatch) => {
-        setTimeout(() => {
-            dispatch(login(123, 'pedro'))
-        }, 3500);
+export const startLoginEmailPassword = (email, password) => {
+    return async (dispatch) => {
+        const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+        dispatch(login(user.uid, user.displayName));
     }
 }
 
@@ -16,10 +15,30 @@ export const startGoogleLogin = () => {
     }
 }
 
+export const startRegisterWithEmailPasswordName = (email, password, name) => {
+    return async (dispatch) => {
+        const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await user.updateProfile({ displayName: name });
+        dispatch(login(user.uid, user.displayName))
+    }
+}
+
 export const login = (uid, displayName) => ({
     type: types.login,
     payload: {
         uid,
         displayName
     }
+})
+
+export const startLogout = () => {
+    return async (dispatch) => {
+        await firebase.auth().signOut()
+        dispatch( logOut() )
+    }
+}
+
+
+export const logOut = () => ({
+    type: types.logout,
 })
