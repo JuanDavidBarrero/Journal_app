@@ -3,7 +3,7 @@ import React from 'react'
 export const NotesAppBar = () => {
     return (
         <div className="notes__appbar">
-            <sapn>29 de agosto 2021</sapn>
+            <span>29 de agosto 2021</span>
 
             <div>
                 <button className="btn" >Picture</button>
