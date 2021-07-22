@@ -26,3 +26,11 @@
     width: 100%;
     font-size: 1em;
 }
+
+.btn-danger{
+    background-color: red;
+    transition:background-color  0.3s ease;
+    &:hover{
+        background-color: darken($color: red, $amount: 20);
+    }
+}
